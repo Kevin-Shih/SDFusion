@@ -31,18 +31,18 @@ def test_img2shape(opt, model, test_mask, save_result=True):
         if not np.any(mask_np):
             continue
         img_name = os.path.basename(test_mask).split('.')[0]
-        img_path = os.path.join('/home/nycu-reconstruction-2/dataDisk/Dataset/coco/val2017', img_name.split('_')[0]+'.jpg')
-        # img_path = os.path.join('data/coco/val2017', img_name.split('_')[0]+'.jpg')
+        # img_path = os.path.join('/home/nycu-reconstruction-2/dataDisk/Dataset/coco/val2017', img_name.split('_')[0]+'.jpg')
+        img_path = os.path.join('data/coco/val2017', img_name.split('_')[0]+'.jpg')
         sdf_gen = model.img2shape(image=img_path, mask=test_mask, ddim_steps=opt.ddim_steps, 
                                   ddim_eta=opt.ddim_eta, uc_scale=opt.uc_scale)
         if save_result:
             if not os.path.exists(opt.out_dir):
                 os.makedirs(opt.out_dir)
             save_name = f'{opt.out_dir}/img2shape_{img_name}'
-            img = Image.open(img_path)
-            img.save(f'{opt.out_dir}/{img_name}.png')
-            mask = Image.open(test_mask)
-            mask.save(f'{opt.out_dir}/{img_name}_mask.png')
+            # img = Image.open(img_path)
+            # img.save(f'{opt.out_dir}/{img_name}.png')
+            # mask = Image.open(test_mask)
+            # mask.save(f'{opt.out_dir}/{img_name}_mask.png')
 
             masked_img, _ = preprocess_image(img_path, test_mask)
             masked_img.save(save_name + '.png')
@@ -51,7 +51,7 @@ def test_img2shape(opt, model, test_mask, save_result=True):
             final_verts, final_faces = mesh_gen.get_mesh_verts_faces(0)
             io.save_obj(save_name + '.obj', final_verts, final_faces)
             # vis as gif
-            save_mesh_as_gif(model.renderer, mesh_gen, out_name=save_name + '.gif')
+            # save_mesh_as_gif(model.renderer, mesh_gen, out_name=save_name + '.gif')
         pbar.update(1)
     pbar.close()
         
@@ -63,7 +63,10 @@ if __name__ == "__main__":
 
     # test input
     # test_mask = [os.path.join("../pred_masks", filename) for filename in os.listdir("../pred_masks")[:10]]
-    test_mask = ["../pred_masks/000000003934_57_0.png", "../pred_masks/000000004495_57_0.png", "../pred_masks/000000578500_57_1.png"]
+    test_mask = ["../pred_masks/000000003934_57_0.png", "../pred_masks/000000004495_57_0.png",\
+                 "../pred_masks/000000029596_57_0.png", "../pred_masks/000000013923_57_0.png",\
+                 "../pred_masks/000000031248_57_5.png", "../pred_masks/000000039477_57_2.png",\
+                 "../pred_masks/000000031735_57_0.png", "../pred_masks/000000060899_57_0.png",]
     dataset_size = len(test_mask)
     cprint('[*] # testing images = %d' % dataset_size, 'yellow')
 
@@ -73,4 +76,3 @@ if __name__ == "__main__":
 
     with torch.no_grad():
         test_img2shape(opt, model, test_mask, save_result=opt.save_result)
-        # test_img2shape(opt, model, test_mask, save_result=True)
