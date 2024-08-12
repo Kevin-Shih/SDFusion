@@ -22,7 +22,7 @@ class BaseOptions():
     def initialize(self):
         # hyper parameters
         self.parser.add_argument('--batch_size', type=int, default=1, help='input batch size')
-        self.parser.add_argument('--gpu_ids', type=str, default='1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+        self.parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
 
         # log stuff
         self.parser.add_argument('--logs_dir', type=str, default='./logs', help='the root of the logs dir. All training logs are saved here')
@@ -37,7 +37,7 @@ class BaseOptions():
         
         self.parser.add_argument('--ratio', type=float, default=1., help='ratio of the dataset to use. for debugging and overfitting')
         self.parser.add_argument('--max_dataset_size', default=2147483648, type=int, help='chooses the maximum dataset size.')
-        self.parser.add_argument('--nThreads', default=9, type=int, help='# threads for loading data')        
+        self.parser.add_argument('--nThreads', default=8, type=int, help='# threads for loading data')        
         self.parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')
 
         ############## START: model related options ################
@@ -57,8 +57,8 @@ class BaseOptions():
         # vqvae stuff
         self.parser.add_argument('--vq_model', type=str, default='vqvae', help='for choosing the vqvae model to use.')
         self.parser.add_argument('--vq_cfg', type=str, default='configs/vqvae_snet.yaml', help='vqvae model config file')
-        self.parser.add_argument('--vq_dset', type=str, default=None, help='dataset vqvae originally trained on')
-        self.parser.add_argument('--vq_cat', type=str, default=None, help='dataset category vqvae originally trained on')
+        self.parser.add_argument('--vq_dset', type=str, default='snet', help='dataset vqvae originally trained on')
+        self.parser.add_argument('--vq_cat', type=str, default='all', help='dataset category vqvae originally trained on')
         self.parser.add_argument('--vq_ckpt', type=str, default=None, help='vqvae ckpt to load.')
         ############## END: model related options ################
 
@@ -69,6 +69,10 @@ class BaseOptions():
         # multi-gpu stuff
         self.parser.add_argument("--backend", type=str, default="gloo", help="which backend to use")
         self.parser.add_argument("--local_rank", type=int, default=0, help="local rank for distributed training")
+
+        #inference&save
+        self.parser.add_argument("--out_dir", type=str, default='demo_results', help="where to save shape output")
+        self.parser.add_argument("--save_result", action='store_true', help="whether store shape output")
 
         self.initialized = True
 

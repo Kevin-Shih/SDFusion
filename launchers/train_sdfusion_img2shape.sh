@@ -9,7 +9,7 @@ if [ `hostname` = az007 ] || [ `hostname` = az006 ]; then
 fi
 
 ### set gpus ###
-gpu_ids=3          # single-gpu
+gpu_ids=0          # single-gpu
 # gpu_ids=0,1,2,3  # multi-gpu
 
 if [ ${#gpu_ids} -gt 1 ]; then
@@ -24,7 +24,7 @@ fi
 
 ### hyper params ###
 lr=1e-5
-batch_size=20
+batch_size=10
 backend="gloo"
 ####################
 

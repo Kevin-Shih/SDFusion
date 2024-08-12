@@ -9,6 +9,7 @@
 *.gif
 *.rar
 LICENSE
+demo_results/*
 
 # cache
 __pycache__/

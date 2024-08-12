@@ -301,8 +301,14 @@ def mask2bbox(mask):
     # mask: w x h
     rows = np.any(mask, axis=1)
     cols = np.any(mask, axis=0)
-    rmin, rmax = np.where(rows)[0][[0, -1]]
-    cmin, cmax = np.where(cols)[0][[0, -1]]
+    if np.any(rows):
+        rmin, rmax = np.where(rows)[0][[0, -1]]
+    else:
+        rmin, rmax = 0, 1
+    if np.any(cols):
+        cmin, cmax = np.where(cols)[0][[0, -1]]
+    else:
+        cmin, cmax = 0, 1
     # return rmin, rmax, cmin, cmax
     return cmin, rmin, cmax, rmax
 

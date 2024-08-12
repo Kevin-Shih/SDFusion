@@ -20,7 +20,7 @@ fi
 
 ### hyper params ###
 lr=1e-4
-batch_size=8
+batch_size=4
 ####################
 
 ### model stuff ###
@@ -62,7 +62,7 @@ name="${DATE_WITH_TIME}-${model}-${dataset_mode}-${cat}-LR${lr}-${note}"
 debug=0
 if [ $debug = 1 ]; then
     printf "${RED}Debugging!${NC}\n"
-	batch_size=3
+	batch_size=2
     # batch_size=40
 	max_dataset_size=120
     save_steps_freq=3

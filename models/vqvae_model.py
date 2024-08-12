@@ -143,7 +143,7 @@ class VQVAEModel(BaseModel):
 
         iou_list = []
         with torch.no_grad():
-            for ix, test_data in tqdm(enumerate(dataloader), total=len(dataloader)):
+            for ix, test_data in tqdm(enumerate(dataloader), total=len(dataloader), ncols=100):
 
                 iou = self.test_iou(test_data, thres=thres)
                 iou_list.append(iou.detach())

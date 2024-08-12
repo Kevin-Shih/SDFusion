@@ -17,7 +17,7 @@ CUR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dset', type=str, choices=['shapenet', 'abc', 'pix3d', 'building'], default='shapenet', help='which dataset to extract sdf')
-parser.add_argument('--thread_num', type=int, default='9', help='how many objs are creating at the same time')
+parser.add_argument('--thread_num', type=int, default='8', help='how many objs are creating at the same time')
 parser.add_argument('--reduce', type=int, default=4, help='define resolution. res=256//reduce')
 parser.add_argument('--category', type=str, default="all", help='Which single class to generate on [default: all, can '
                                                                 'be chair or plane, etc.]')
@@ -462,7 +462,7 @@ def create_sdf_pix3d(sdfcommand, marching_cube_command, LIB_command,
     #cats_init = cats
     #cats = cats_init
     #cats['airplane'] = cats_init['airplane']
-    #print("command:", LIB_command)
+    print("command:", LIB_command)
     os.system(LIB_command)
     start=0
 
@@ -475,8 +475,9 @@ def create_sdf_pix3d(sdfcommand, marching_cube_command, LIB_command,
     # with open(gt_txt, 'r') as f:
     #     gt_lines = [l.strip('\n')[3:] for l in f.readlines()] # no ../
 
-    lst_dir
-    dataroot = lst_dir.split('/pix3d/filelists')[0]
+
+    # dataroot = lst_dir.split('/pix3d/filelists')[0]
+    dataroot = "../data"
     with open(f'{dataroot}/pix3d/pix3d.json', 'r') as f:
         pix3d_info = json.load(f)
     pix3d_root = f'{dataroot}/pix3d'
@@ -859,8 +860,10 @@ if __name__ == "__main__":
     cat = FLAGS.category
 
     # lst_dir, cats, all_cats, raw_dirs = get_sdf_file_lst.get_all_info(dset)
-
-    info_file = '../dataset_info_files/info-shapenet.json'
+    if dset == 'shapenet':
+        info_file = '../dataset_info_files/info-shapenet.json'
+    elif dset == 'pix3d':
+        info_file = '../dataset_info_files/info-pix3d.json'
     with open(info_file) as json_file:
         info_data = json.load(json_file)
         lst_dir, cats, all_cats, raw_dirs = info_data["lst_dir"], info_data['cats'], info_data['all_cats'], info_data['raw_dirs_v1']

@@ -85,7 +85,7 @@ def save_mesh_as_gif(mesh_renderer, mesh, nrow=3, fps=450, out_name='1.gif'):
     duration = nrots / fps
 
     # with imageio.get_writer(out_name, mode='I', duration=.08) as writer:
-    with imageio.get_writer(out_name, mode='I', duration=duration) as writer:
+    with imageio.get_writer(out_name, mode='I', duration=duration, disposal=2, loop=0) as writer:
         
         # combine them according to nrow
         for rot in rot_comb_img:
@@ -213,8 +213,8 @@ def sdf_to_mesh(sdf, level=0.02, color=None, render_all=False):
 
     for i in range(nimg_to_render):
         sdf_i = sdf[i, 0].detach().cpu().numpy()
-        # verts_i, faces_i = mcubes.marching_cubes(sdf_i, 0.02)
-        verts_i, faces_i = mcubes.marching_cubes(sdf_i, level)
+        verts_i, faces_i = mcubes.marching_cubes(sdf_i, 0.01)
+        # verts_i, faces_i = mcubes.marching_cubes(sdf_i, level)
         verts_i = verts_i / n_cell - .5 
 
         verts_i = torch.from_numpy(verts_i).float().to(device)
@@ -232,7 +232,6 @@ def sdf_to_mesh(sdf, level=0.02, color=None, render_all=False):
         p3d_mesh = pytorch3d.structures.Meshes(verts, faces, textures=pytorch3d.renderer.Textures(verts_rgb=verts_rgb))
     except:
         p3d_mesh = None
-
     return p3d_mesh
 
 def voxel_to_mesh(voxel, color=None):

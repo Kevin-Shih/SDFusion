@@ -36,7 +36,7 @@ def train_main_worker(opt, model, train_dl, test_dl, test_dl_for_eval, visualize
     # get n_epochs here
     # opt.total_iters = 100000000
     # pbar = tqdm(range(opt.total_iters))
-    pbar = tqdm(total=opt.total_iters)
+    pbar = tqdm(total=opt.total_iters, ncols=100)
 
     iter_start_time = time.time()
     for iter_i in range(opt.total_iters):
@@ -75,13 +75,14 @@ def train_main_worker(opt, model, train_dl, test_dl, test_dl_for_eval, visualize
                 visualizer.display_current_results(model.get_current_visuals(), iter_i, phase='train')
 
                 # model.set_input(next(test_dg))
+                # validation
                 test_data = next(test_dg)
                 model.inference(test_data)
                 visualizer.display_current_results(model.get_current_visuals(), iter_i, phase='test')
                 # torch.cuda.empty_cache()
 
             if iter_ip1 % opt.save_latest_freq == 0:
-                cprint('saving the latest model (current_iter %d)' % (iter_i), 'blue')
+                cprint('\n\rsaving the latest model (current_iter %d)' % (iter_i), 'blue')
                 latest_name = f'steps-latest'
                 model.save(latest_name, iter_ip1)
 
@@ -113,6 +114,7 @@ def train_main_worker(opt, model, train_dl, test_dl, test_dl_for_eval, visualize
             model.update_learning_rate()
 
         pbar.update(1)
+    pbar.close()
         
 
 if __name__ == "__main__":

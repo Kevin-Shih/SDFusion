@@ -1,0 +1,9 @@
+{
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.autoImportCompletions": false,
+    "python.analysis.exclude": [
+        "**/data",
+        "**/saved_ckpt",
+        "**/demo_results"
+    ]
+}
